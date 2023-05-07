@@ -15,4 +15,3 @@ fs.readdir(folderPath, (err, files) => {
         });
     });
 });
-

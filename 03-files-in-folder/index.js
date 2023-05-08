@@ -11,7 +11,7 @@ fs.readdir(folderPath, (err, files) => {
             const ext = path.extname(file);
             const name = file.slice(0, -ext.length);
             let size = stats.size;
-            if (size > 0) console.log(`${name} - ${ext} - ${size}`);
+            if (stats.isFile()) console.log(`${name} - ${ext.slice(1)} - ${size} bytes`);
         });
     });
 });

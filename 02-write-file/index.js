@@ -1,19 +1,24 @@
 const fs = require('fs');
-const readline = require('readline');
+const path = require('path');
 
-fs.writeFile('02-write-file/text.txt', '', (err) => {
-    if (err) throw err;
+const { stdin, stdout } = process;
+
+const filePath = path.join(__dirname, 'text.txt');
+
+stdout.write('Введите текст: \n');
+
+fs.writeFile(filePath, '', (err) => { if (err) throw err; });
+
+stdin.on('data', (data) => {
+    let msg = data.toString();
+    if (msg === 'exit\r\n') process.exit();
+    else fs.appendFile(filePath, data, (err) => { if (err) throw err; });
 });
 
-const rl = readline.createInterface({
-        input: process.stdin, 
-        output: process.stdout
+process.on('exit', () => {
+    stdout.write('Спасибо, удачи!\n');
 });
 
-rl.question('Введите текст:\n', (text) => {
-    fs.writeFile('02-write-file/text.txt', text, (err) => {
-        if (err) throw err;
-        console.log('Текст успешно записан');
-    });
-    rl.close();
+process.on('SIGINT', () => {
+    process.exit();
 });
